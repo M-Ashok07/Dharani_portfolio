@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schedule an Interview — Dharani R</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="board-lines" aria-hidden="true"></div>
+
+<header class="topbar">
+  <a href="index.html" class="mark">DR</a>
+  <nav class="topnav">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="internship.html">Internship</a>
+    <a href="schedule.html" class="active">Schedule Interview</a>
+  </nav>
+</header>
+
+<main>
+  <section class="page-head">
+    <p class="hero-role">For recruiters &amp; hiring managers</p>
+    <h1 class="page-title">Schedule an interview</h1>
+    <p class="hero-line">Fill this in with a couple of time slots that work for you and I'll
+      confirm by email within a day. If you'd rather just email or call directly, my details
+      are at the bottom.</p>
+  </section>
+
+  <section class="section">
+    <!--
+      This form posts to Formspree, a free form-backend service that works with
+      static sites (no server code needed). Replace YOUR_FORM_ID below with your
+      own endpoint from https://formspree.io — takes about a minute to set up.
+      See README.md for step-by-step instructions and alternatives.
+    -->
+    <form id="interview-form" class="form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <div class="form-row">
+        <label for="hr_name">Your name</label>
+        <input type="text" id="hr_name" name="name" required autocomplete="name">
+      </div>
+
+      <div class="form-row">
+        <label for="hr_company">Company</label>
+        <input type="text" id="hr_company" name="company" required autocomplete="organization">
+      </div>
+
+      <div class="form-row">
+        <label for="hr_email">Email</label>
+        <input type="email" id="hr_email" name="email" required autocomplete="email">
+      </div>
+
+      <div class="form-row">
+        <label for="hr_phone">Phone <span class="optional">(optional)</span></label>
+        <input type="tel" id="hr_phone" name="phone" autocomplete="tel">
+      </div>
+
+      <div class="form-row form-row-split">
+        <div>
+          <label for="hr_date">Preferred date</label>
+          <input type="date" id="hr_date" name="preferred_date" required>
+        </div>
+        <div>
+          <label for="hr_time">Preferred time</label>
+          <input type="time" id="hr_time" name="preferred_time" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="hr_role">Role you're hiring for <span class="optional">(optional)</span></label>
+        <input type="text" id="hr_role" name="role" placeholder="e.g. Data Analyst Intern">
+      </div>
+
+      <div class="form-row">
+        <label for="hr_message">Message <span class="optional">(optional)</span></label>
+        <textarea id="hr_message" name="message" rows="4" placeholder="Anything you'd like me to know ahead of the call"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Request interview slot</button>
+      <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <section class="section contact">
+    <h2 class="section-title">Prefer to reach out directly?</h2>
+    <div class="contact-links">
+      <a href="mailto:dharanidharu592@gmail.com">dharanidharu592@gmail.com</a>
+      <a href="tel:+917812871668">+91 78128 71668</a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <span>Dharani R · Chennai, Tamil Nadu</span>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>

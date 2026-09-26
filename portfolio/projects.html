@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Dharani R</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="board-lines" aria-hidden="true"></div>
+
+<header class="topbar">
+  <a href="index.html" class="mark">DR</a>
+  <nav class="topnav">
+    <a href="index.html">Home</a>
+    <a href="projects.html" class="active">Projects</a>
+    <a href="internship.html">Internship</a>
+    <a href="schedule.html">Schedule Interview</a>
+  </nav>
+</header>
+
+<main>
+  <section class="page-head">
+    <p class="hero-role">Projects</p>
+    <h1 class="page-title">Things I've built</h1>
+    <p class="hero-line">Hardware-facing work from coursework and training programs, where the goal
+      was always the same: turn a raw signal into something a person can act on.</p>
+  </section>
+
+  <section class="section project-detail">
+    <div class="project-art" aria-hidden="true">
+      <!-- Original illustration: sensor + vital-sign waveform, for the health monitor project -->
+      <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="90" width="90" height="70" rx="6" fill="#16311F" stroke="#C87941" stroke-width="2"/>
+        <text x="65" y="130" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#E39A5E">MCU</text>
+        <path d="M110 125 H180" stroke="#C87941" stroke-width="2"/>
+        <circle cx="180" cy="125" r="4" fill="#E39A5E"/>
+        <polyline points="180,125 200,125 210,70 225,180 240,125 400,125"
+          fill="none" stroke="#EDEEE7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <g stroke="#C87941" stroke-width="2" fill="none">
+          <path d="M65 90 V50 H30"/>
+          <path d="M65 160 V210 H30"/>
+        </g>
+        <g fill="#E39A5E">
+          <circle cx="30" cy="50" r="4"/>
+          <circle cx="30" cy="210" r="4"/>
+        </g>
+        <text x="30" y="40" font-family="JetBrains Mono, monospace" font-size="10" fill="#A9B7AA">pulse</text>
+        <text x="30" y="228" font-family="JetBrains Mono, monospace" font-size="10" fill="#A9B7AA">temp</text>
+      </svg>
+    </div>
+
+    <div class="project-body">
+      <h2>Pregnant Women Health Care — Arduino Monitor</h2>
+      <p class="entry-tags">Arduino · Sensors · IoT · Embedded C · Alert Systems</p>
+
+      <h3>The problem</h3>
+      <p>Built during the Internet of Things training program with TVS Training and Service,
+        this project targeted a real gap: pregnant women, especially in areas without constant
+        access to a clinic, often can't have their vitals monitored continuously.</p>
+
+      <h3>What I built</h3>
+      <p>An Arduino-based wearable/bedside monitoring unit that integrates multiple sensors to
+        track vital health parameters — such as heart rate and body temperature — in real time.
+        The system runs a continuous read loop and compares incoming sensor values against safe
+        thresholds.</p>
+
+      <h3>The alert mechanism</h3>
+      <p>When a reading crosses outside the safe range, the system triggers an alert to notify
+        caregivers immediately, rather than waiting for a scheduled check-in. That shift — from
+        periodic manual checks to continuous automated monitoring — was the core idea behind
+        the project.</p>
+
+      <h3>What I learned</h3>
+      <p>This was my first hands-on experience combining multiple sensor inputs into one coherent
+        decision system, and it's part of why I'm drawn to data work now: the interesting part
+        wasn't wiring the sensors, it was deciding what the numbers meant and when they mattered
+        enough to act on.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">More in progress</h2>
+    <p class="about-text">This page will grow as I take on more data-focused projects —
+      dashboards, exploratory analysis, and small ML experiments. If you'd like to see
+      work-in-progress or discuss a project idea, <a class="inline-link" href="schedule.html">get in touch</a>.</p>
+  </section>
+</main>
+
+<footer class="footer">
+  <span>Dharani R · Chennai, Tamil Nadu</span>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>

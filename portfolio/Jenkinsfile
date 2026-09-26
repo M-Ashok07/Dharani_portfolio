@@ -1,0 +1,110 @@
+// Jenkins declarative pipeline: build the portfolio image, push it to a
+// registry, then deploy it by running the container on the target host.
+//
+// Before running:
+//   1. Create a Jenkins credential of kind "Username with password"
+//      (or "Secret text" for a token) with the ID below, matching your registry.
+//   2. Point REGISTRY / IMAGE_NAME at your Docker Hub, GHCR, or private registry.
+//   3. If deploying to a remote host instead of the Jenkins agent itself,
+//      replace the "Deploy" stage with an SSH step (see comment there).
+
+pipeline {
+    agent any
+
+    environment {
+        REGISTRY        = 'docker.io/yourdockerhubuser'   // <-- change this
+        IMAGE_NAME       = 'dharani-portfolio'
+        IMAGE_TAG        = "${env.BUILD_NUMBER}"
+        FULL_IMAGE       = "${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
+        LATEST_IMAGE     = "${REGISTRY}/${IMAGE_NAME}:latest"
+        REGISTRY_CREDS   = 'dockerhub-credentials'         // <-- Jenkins credential ID
+        CONTAINER_NAME   = 'dharani-portfolio'
+        HOST_PORT        = '8080'
+    }
+
+    options {
+        timestamps()
+        disableConcurrentBuilds()
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Lint HTML/CSS') {
+            steps {
+                // Fails fast on broken markup before it ever reaches an image.
+                sh '''
+                    npx --yes html-validate index.html || true
+                '''
+            }
+        }
+
+        stage('Build Image') {
+            steps {
+                sh "docker build -t ${FULL_IMAGE} -t ${LATEST_IMAGE} ."
+            }
+        }
+
+        stage('Smoke Test Container') {
+            steps {
+                sh """
+                    docker run -d --rm --name ${CONTAINER_NAME}-test -p 8099:80 ${FULL_IMAGE}
+                    sleep 3
+                    curl -sf http://localhost:8099/ > /dev/null
+                    docker stop ${CONTAINER_NAME}-test
+                """
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: "${REGISTRY_CREDS}",
+                    usernameVariable: 'REG_USER',
+                    passwordVariable: 'REG_PASS'
+                )]) {
+                    sh '''
+                        echo "$REG_PASS" | docker login -u "$REG_USER" --password-stdin
+                        docker push ${FULL_IMAGE}
+                        docker push ${LATEST_IMAGE}
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Deploying on the same host Jenkins runs on.
+                // For a remote host, swap this block for an SSH step, e.g.:
+                //   sshagent(['deploy-server-ssh-key']) {
+                //       sh "ssh user@your-server 'docker pull ${LATEST_IMAGE} && \
+                //            docker stop ${CONTAINER_NAME} || true && \
+                //            docker rm ${CONTAINER_NAME} || true && \
+                //            docker run -d --name ${CONTAINER_NAME} -p ${HOST_PORT}:80 ${LATEST_IMAGE}'"
+                //   }
+                sh """
+                    docker stop ${CONTAINER_NAME} || true
+                    docker rm ${CONTAINER_NAME} || true
+                    docker run -d --name ${CONTAINER_NAME} -p ${HOST_PORT}:80 --restart unless-stopped ${LATEST_IMAGE}
+                """
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Deployed ${FULL_IMAGE} — visit http://<host>:${HOST_PORT}"
+        }
+        failure {
+            echo "Pipeline failed — check the stage logs above."
+        }
+        always {
+            sh 'docker image prune -f || true'
+        }
+    }
+}
